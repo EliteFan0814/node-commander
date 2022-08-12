@@ -1,0 +1,11 @@
+{
+  "name": "node-commander",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:EliteFan0814/node-commander.git",
+  "author": "fanpeichao <fan552426811@outlook.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^9.4.0"
+  }
+}
