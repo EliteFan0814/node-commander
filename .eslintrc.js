@@ -18,16 +18,12 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "prettier"],
   rules: {
-    // indent: ["error", "tab"],
-    // "linebreak-style": ["error", "windows"],
-    // quotes: ["error", "double"],
-    // semi: ["error", "always"],
+    "@typescript-eslint/no-var-requires": "warn",
     "prettier/prettier": [
       "warn",
       {
         singleQuote: false,
         tabs: false,
-        parser: "flow",
         endOfLine: "auto",
         trailingComma: "es5",
         proseWrap: "always",
