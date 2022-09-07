@@ -16,6 +16,7 @@ program
   .action((source, destination) => {
     const options = program.opts();
     api.add(source);
+    api.testlist();
   });
 console.log(111, process.argv);
 program.parse(process.argv);
