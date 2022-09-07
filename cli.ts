@@ -10,13 +10,18 @@ program
   .action((source, destination) => {
     api.clear();
   });
+
 program
   .command("add <source>")
   .description("添加一个任务")
   .action((source, destination) => {
-    const options = program.opts();
     api.add(source);
+  });
+
+program
+  .command("init")
+  .description("初始化")
+  .action(() => {
     api.testlist();
   });
-console.log(111, process.argv);
 program.parse(process.argv);

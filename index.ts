@@ -1,6 +1,6 @@
 import { homedir } from "os";
-import path from "path";
-import fs from "fs";
+const path = require("path");
+import * as fs from "fs";
 import inquirer from "inquirer";
 
 const dbPath = path.join(homedir(), ".todo");
@@ -69,27 +69,8 @@ const testlist = () => {
       {
         type: "list",
         name: "theme",
-        message: "What do you want to do?",
-        choices: [
-          "Order a pizza",
-          "Make a reservation",
-          new inquirer.Separator(),
-          "Ask for opening hours",
-          {
-            name: "Contact support",
-            disabled: "Unavailable at this time",
-          },
-          "Talk to the receptionist",
-        ],
-      },
-      {
-        type: "list",
-        name: "size",
-        message: "What size do you need?",
-        choices: ["Jumbo", "Large", "Standard", "Medium", "Small", "Micro"],
-        filter(val) {
-          return val.toLowerCase();
-        },
+        message: "你想做啥?",
+        choices: ["1", "2", "3"],
       },
     ])
     .then((answers) => {
