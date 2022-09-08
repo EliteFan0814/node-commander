@@ -17,7 +17,6 @@ program
   .option("-b,--ban", "拉黑的饭")
   // .option('-a,--add <dishes>', '添加新菜',handleAdd,0)
   .option("-a,--add <dishes>", "添加新菜", handleAdd);
-
 program
   .command("add")
   .argument("<first>", "integer argument")
@@ -25,7 +24,6 @@ program
   .action((first, second) => {
     console.log(222);
   });
-
 program.parse(process.argv);
 const options = program.opts();
 if (options.recent) {
