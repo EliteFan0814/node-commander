@@ -25,10 +25,10 @@ program
   });
 
 program
-  .command("init")
-  .description("初始化")
+  .command("start")
+  .description("开始todo list")
   .action(() => {
-    api.testlist();
+    api.startTodo();
   });
 program.option("-l,--list", "列出所有任务");
 program.parse(process.argv);

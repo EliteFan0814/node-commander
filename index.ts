@@ -2,7 +2,7 @@ import { homedir } from "os";
 const path = require("path");
 import * as fs from "fs";
 import inquirer from "inquirer";
-import { type TodoList, type TodoItem } from "types/index";
+import { type TodoList, type Actions } from "types/index";
 const dbPath = path.join(homedir(), ".todo");
 // 重置文件
 const reset = (path = dbPath) => {
@@ -45,87 +45,69 @@ const write = (list: TodoList, path = dbPath) => {
     });
   });
 };
-const testlist = async () => {
-  const list: TodoList = await read(dbPath);
+// 创建新任务
+const createNewTask = (list: TodoList): void => {
+  inquirer
+    .prompt({
+      type: "input",
+      name: "title",
+      message: "请输入新的任务名",
+    })
+    .then((answers) => {
+      list.push({ title: answers.title, done: false });
+      write(list);
+    });
+};
+//
+const markAsDone = (list: TodoList, taskIndex: number): void => {
+  list[taskIndex].done = true;
+  write(list);
+};
+const markAsUnDone = (list: TodoList, taskIndex: number): void => {
+  list[taskIndex].done = false;
+  write(list);
+};
+const deleteTask = (list: TodoList, taskIndex: number): void => {
+  list.splice(taskIndex, 1);
+  write(list);
+};
+const editTask = (list: TodoList, taskIndex: number): void => {
+  inquirer
+    .prompt({
+      type: "input",
+      name: "title",
+      message: "请输入新的任务名",
+      default: list[taskIndex].title,
+    })
+    .then((answers3) => {
+      list[taskIndex].title = answers3.title;
+      write(list);
+    });
+};
+// 操作已有任务
+const operateExistTask = (list: TodoList, taskIndex: number) => {
   inquirer
     .prompt({
       type: "list",
-      name: "taskValue",
-      message: "请选择你想操作的任务?",
+      name: "action",
+      message: "请选择要执行的操作",
       choices: [
-        { name: "退出", value: "-1" },
-        ...list.map((item, index) => {
-          return {
-            name: `${item.done ? "[x]" : "[_]"} ${index + 1} - ${item.title}`,
-            value: index,
-          };
-        }),
-        { name: "创建新任务", value: "-2" },
+        { name: "退出", value: "quit" },
+        { name: "标记为完成", value: "markAsDone" },
+        { name: "标记为未完成", value: "markAsUnDone" },
+        { name: "修改", value: "editTask" },
+        { name: "删除", value: "deleteTask" },
       ],
     })
-    .then((answers) => {
-      const taskIndex = answers.taskValue;
-      if (taskIndex === "-1") {
-        // 退出
-      } else if (taskIndex === "-2") {
-        // 创建新任务
-        inquirer
-          .prompt({
-            type: "input",
-            name: "title",
-            message: "请输入新的任务名",
-          })
-          .then((answers) => {
-            list.push({ title: answers.title, done: false });
-            write(list);
-          });
-      } else {
-        inquirer
-          .prompt({
-            type: "list",
-            name: "action",
-            message: "请选择要执行的操作",
-            choices: [
-              { name: "退出", value: "quit" },
-              { name: "标记为完成", value: "markAsDone" },
-              { name: "标记为未完成", value: "markAsUnDone" },
-              { name: "修改", value: "edit" },
-              { name: "删除", value: "delete" },
-            ],
-          })
-          .then((answers2) => {
-            switch (answers2.action) {
-              case "quit":
-                break;
-              case "markAsDone":
-                list[taskIndex].done = true;
-                write(list);
-                break;
-              case "markAsUnDone":
-                list[taskIndex].done = false;
-                write(list);
-                break;
-              case "edit":
-                inquirer
-                  .prompt({
-                    type: "input",
-                    name: "title",
-                    message: "请输入新的任务名",
-                    default: list[taskIndex].title,
-                  })
-                  .then((answers3) => {
-                    list[taskIndex].title = answers3.title;
-                    write(list);
-                  });
-                break;
-              case "delete":
-                list.splice(taskIndex, 1);
-                write(list);
-                break;
-              default:
-            }
-          });
-      }
+    .then((answers2: { action: string }) => {
+      const actions: Actions = {
+        markAsDone,
+        markAsUnDone,
+        editTask,
+        deleteTask,
+      };
+      const action = actions[answers2.action];
+      action && action(list, taskIndex);
     });
 };
 
@@ -144,6 +126,36 @@ export const clear = async () => {
   } catch (err) {
     console.log("清空失败！");
   }
+};
+const startTodo = async () => {
+  const list: TodoList = await read(dbPath);
+  inquirer
+    .prompt({
+      type: "list",
+      name: "taskValue",
+      message: "请选择你想操作的任务?",
+      choices: [
+        { name: "退出", value: "-1" },
+        ...list.map((item, index) => {
+          return {
+            name: `${item.done ? "[x]" : "[_]"} ${index + 1} - ${item.title}`,
+            value: index,
+          };
+        }),
+        { name: "创建新任务", value: "-2" },
+      ],
+    })
+    .then((answers) => {
+      const taskIndex = Number(answers.taskValue);
+      if (taskIndex === -1) {
+        // 退出
+      } else if (taskIndex === -2) {
+        // 创建新任务
+        createNewTask(list);
+      } else {
+        operateExistTask(list, taskIndex);
+      }
+    });
 };
 export const show = async () => {
   try {
@@ -165,6 +177,6 @@ export const show = async () => {
 export default {
   add,
   clear,
-  testlist,
+  startTodo,
   show,
 };
