@@ -1,5 +1,5 @@
-// import { Command } from "commander";
-const { Command } = require("commander");
+import { Command } from "commander";
+// const { Command } = require("commander");
 const program = new Command();
 program
   .name("吃啥")

@@ -1,50 +1,10 @@
 import { homedir } from "os";
 const path = require("path");
-import * as fs from "fs";
+// import * as fs from "fs";
 import inquirer from "inquirer";
 import { type TodoList, type Actions } from "types/index";
+import { reset, read, write } from "./db";
 const dbPath = path.join(homedir(), ".todo");
-// 重置文件
-const reset = (path = dbPath) => {
-  return new Promise<void>((resolve, reject) => {
-    fs.writeFile(path, "[]", (err) => {
-      if (err) return reject(err);
-      resolve();
-      console.log("清空成功！");
-    });
-  });
-};
-// 读取文件
-const read = (path = dbPath) => {
-  return new Promise<TodoList>((resolve, reject) => {
-    fs.readFile(path, { flag: "a+" }, (error, data) => {
-      if (error) {
-        reject(error);
-      } else {
-        let list: TodoList;
-        try {
-          list = JSON.parse(data.toString());
-        } catch (dataErr) {
-          list = [];
-        }
-        resolve(list);
-      }
-    });
-  });
-};
-// 写入文件
-const write = (list: TodoList, path = dbPath) => {
-  return new Promise<void>((resolve, reject) => {
-    const string = JSON.stringify(list);
-    fs.writeFile(path, string + "\n", async (err) => {
-      if (err) return reject(err);
-      resolve();
-      console.log("写入成功！");
-      // const list = await read(dbPath);
-      // console.log(list);
-    });
-  });
-};
 // 创建新任务
 const createNewTask = (list: TodoList): void => {
   inquirer
