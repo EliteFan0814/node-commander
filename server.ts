@@ -4,6 +4,7 @@ import path from "path";
 import url from "url";
 const publicDir = path.resolve(__dirname, "public");
 const server = http.createServer();
+const cacheAge = 60 * 60 * 24 * 15;
 server.on("request", (request, response) => {
   const { method, url: route, headers } = request;
   response.setHeader("x-fpc", "hahaha");
@@ -35,6 +36,7 @@ server.on("request", (request, response) => {
             response.end();
           }
         } else {
+          response.setHeader("Cache-Control", `public, max-age=${cacheAge}`);
           response.end(data);
         }
       }
