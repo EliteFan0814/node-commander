@@ -1,7 +1,11 @@
 {
-  "name": "node-commander",
+  "name": "gansha",
   "version": "0.0.1",
-  "main": "index.js",
+  "bin":{
+    "gansha":"dist/cli.js"
+  },
+  "files":["dist/**/*.js"],
+  "main": "dist/index.js",
   "repository": "git@github.com:EliteFan0814/node-commander.git",
   "author": "fanpeichao <fan552426811@outlook.com>",
   "license": "MIT",
