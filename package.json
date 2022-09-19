@@ -6,7 +6,7 @@
   "author": "fanpeichao <fan552426811@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "debuging":"tsnd --inspect-brk cli.ts add 吃屎",
+    "debuging":"tsnd --inspect-brk cli.ts add 吃米饭",
     "chi":"tsnd cli.ts",
     "test": "jest"
   },

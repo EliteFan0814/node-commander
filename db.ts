@@ -1,7 +1,7 @@
 import { homedir } from "os";
 import * as fs from "fs";
 import path from "path";
-import { type TodoList, type Actions } from "types/index";
+import { TodoList } from "types/index";
 
 const dbPath = path.join(homedir(), ".todo");
 

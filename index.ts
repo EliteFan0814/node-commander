@@ -2,7 +2,7 @@ import { homedir } from "os";
 const path = require("path");
 // import * as fs from "fs";
 import inquirer from "inquirer";
-import { type TodoList, type Actions } from "types/index";
+import { TodoList, Actions } from "types/index";
 import { reset, read, write } from "./db";
 const dbPath = path.join(homedir(), ".todo");
 // 创建新任务
