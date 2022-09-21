@@ -7,7 +7,6 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
     "plugin:prettier/recommended",
   ],
   overrides: [],
@@ -16,7 +15,7 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint", "prettier"],
+  plugins: ["@typescript-eslint"],
   rules: {
     "@typescript-eslint/no-var-requires": "warn",
     "prettier/prettier": [
