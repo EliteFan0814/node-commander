@@ -8,6 +8,15 @@ server.on("request", (request, response) => {
   const stream = fs.createReadStream("./big_file.txt");
   console.log(stream);
   stream.pipe(response);
+
+  // pipe 其实等价于：
+  // stream.on("data", (chunk) => {
+  //   response.write(chunk);
+  // });
+  // stream.on("end", () => {
+  //   response.end();
+  // });
+
   // 一次性返回，内存占用很大
   // fs.readFile("./big_file.txt", (error, data) => {
   //   if (error) throw error;
